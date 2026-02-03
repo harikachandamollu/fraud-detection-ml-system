@@ -14,8 +14,6 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 MLFLOW_DB = PROJECT_ROOT / "mlflow.db"
 
-DATA_DIR = PROJECT_ROOT / "data" / "raw"
-
 RANDOM_STATE = 42
 
 
@@ -63,8 +61,8 @@ def train_lightgbm(X_train, y_train, X_val, y_val):
 
 def main():
     # Load data
-    df_trans = pd.read_csv(DATA_DIR / "train_transaction.csv")
-    df_id = pd.read_csv(DATA_DIR / "train_identity.csv")
+    df_trans = pd.read_csv("data/raw/train_transaction.csv")
+    df_id = pd.read_csv("data/raw/train_identity.csv")
     df = df_trans.merge(df_id, on="TransactionID", how="left")
 
     # Feature engineering

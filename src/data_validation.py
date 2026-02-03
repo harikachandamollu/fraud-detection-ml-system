@@ -13,10 +13,6 @@ ARTIFACT_DIR.mkdir(parents=True, exist_ok=True)
 
 EXPECTED_TARGET_VALUES = {0, 1}
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-
-DATA_DIR = PROJECT_ROOT / "data" / "raw"
-
 # Validation Functions
 def validate_schema(df: pd.DataFrame, target: str):
     errors = []
@@ -101,8 +97,8 @@ def generate_report(df: pd.DataFrame, target: str):
 # Main (Fail-Fast)
 if __name__ == "__main__":
     # Load data
-    df_transactions = pd.read_csv(DATA_DIR / "train_transaction.csv")
-    df_identity = pd.read_csv(DATA_DIR / "train_identity.csv")
+    df_transactions = pd.read_csv("data/raw/train_transaction.csv")
+    df_identity = pd.read_csv("data/raw/train_identity.csv")
 
     df = df_transactions.merge(
         df_identity, on=ID_COL, how="left"

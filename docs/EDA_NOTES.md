@@ -73,3 +73,9 @@ Since Accuracy becomes misleading, now relying on metrics ROC-AUC, Precision/Rec
 - Dropped constant features
 - Filled remaining missing values with 0
 - Applied standard scaling
+
+#### Evaluation & Drift Notes
+- Default probability threshold is suboptimal
+- Threshold chosen based on recall constraint
+- KS-test and PSI used for drift detection
+- Drift triggers retraining

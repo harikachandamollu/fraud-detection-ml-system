@@ -1,0 +1,23 @@
+import numpy as np
+from scipy.stats import ks_2samp
+
+
+def ks_drift(reference, current, alpha=0.05):
+    stat, p_value = ks_2samp(reference, current)
+    drift_detected = p_value < alpha
+    return stat, p_value, drift_detected
+
+
+def population_stability_index(expected, actual, bins=10):
+    expected_perc, _ = np.histogram(expected, bins=bins)
+    actual_perc, _ = np.histogram(actual, bins=bins)
+
+    expected_perc = expected_perc / len(expected)
+    actual_perc = actual_perc / len(actual)
+
+    psi = np.sum(
+        (actual_perc - expected_perc) *
+        np.log((actual_perc + 1e-6) / (expected_perc + 1e-6))
+    )
+
+    return psi

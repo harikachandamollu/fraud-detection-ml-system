@@ -1,14 +1,9 @@
 import pandas as pd
 from feature_engineering import build_features
-from pathlib import Path
-
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-
-DATA_DIR = PROJECT_ROOT / "data" / "raw"
 
 # Load raw data
-df_trans = pd.read_csv(DATA_DIR / "train_transaction.csv")
-df_id = pd.read_csv(DATA_DIR / "train_identity.csv")
+df_trans = pd.read_csv("data/raw/train_transaction.csv")
+df_id = pd.read_csv("data/raw/train_identity.csv")
 
 # Merge transaction + identity tables
 df = df_trans.merge(df_id, on="TransactionID", how="left")
