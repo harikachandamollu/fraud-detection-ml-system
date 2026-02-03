@@ -1,5 +1,5 @@
 import pandas as pd
-from feature_engineering import build_features
+from feature_engineering import build_features_train
 
 # Load raw data
 df_trans = pd.read_csv("data/raw/train_transaction.csv")
@@ -9,7 +9,8 @@ df_id = pd.read_csv("data/raw/train_identity.csv")
 df = df_trans.merge(df_id, on="TransactionID", how="left")
 
 # Run feature engineering
-X, y, meta = build_features(df, target="isFraud")
+#X, y, meta = build_features(df, target="isFraud")
+X, y, meta = build_features_train(df, target="isFraud")
 
 
 # BASIC SANITY CHECKS
