@@ -8,7 +8,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score, precision_score, recall_score
 import lightgbm as lgb
 
-from feature_engineering import build_features_train, build_features_infer
+from src.feature_engineering import build_features_train, build_features_infer
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
