@@ -136,11 +136,7 @@ Experiments were tracked using MLflow. Logistic Regression was used as a baselin
 | Logistic Regression | 0.144 | 0.732 | 0.866 |
 | LightGBM | 0.289 | 0.840 | 0.953 |
 
-LightGBM improved performance across all evaluation metrics compared with the baseline model:
-
-* ROC-AUC improved from **0.866 → 0.953**
-* Recall improved from **0.732 → 0.840**
-* Precision improved from **0.144 → 0.289**
+LightGBM achieved better fraud classification performance compared with the baseline model, improving ranking capability and precision on the validation dataset.
 
 The results demonstrate the benefit of using gradient boosting models for complex tabular fraud detection problems with imbalanced classes.
 
@@ -174,7 +170,7 @@ The MLflow UI can be locally to inspect runs and compare models.
 Start the MLflow UI:
 
 ```bash
-mlflow ui
+mlflow ui --backend-store-uri sqlite:///mlflow.db
 ```
 
 Then open in your browser:
