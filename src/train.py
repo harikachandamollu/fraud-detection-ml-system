@@ -64,10 +64,9 @@ def train_lightgbm(X_train, y_train, X_val, y_val):
 
 
 def main():
-    os.environ["MLFLOW_ALLOW_FILE_STORE"] = "true"
-    MLRUNS_DIR = PROJECT_ROOT / "mlruns"
-    FE_STATE_PATH = PROJECT_ROOT / "fe_state.joblib"
-    mlflow.set_tracking_uri(f"file:///{MLRUNS_DIR.as_posix()}")
+    MLFLOW_DB.parent.mkdir(parents=True, exist_ok=True)
+    
+    mlflow.set_tracking_uri(f"sqlite:///{MLFLOW_DB.as_posix()}")
     mlflow.set_experiment("fraud_detection")
 
     if mlflow.active_run() is not None:
@@ -88,6 +87,7 @@ def main():
 
     # Feature engineering
     # Fit FE on TRAIN only, transform VAL using fitted state
+    FE_STATE_PATH = PROJECT_ROOT / "fe_state.joblib"
     X_train, y_train, fe_state = build_features_train(df_train, target="isFraud")
     joblib.dump(fe_state, FE_STATE_PATH)
 

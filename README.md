@@ -14,7 +14,7 @@ The goal of this project is to:
 * Understand model evaluation and experiment tracking using MLflow
 * Gain hands-on experience with common steps in the ML lifecycle
 
-This project is primarily **learning-oriented** and designed to reflect how ML projects are organized in real teams.
+This project demonstrates an end-to-end machine learning workflow following common ML engineering practices, including data validation, feature engineering, experiment tracking, model evaluation, and API deployment.
 
 ---
 
@@ -124,6 +124,27 @@ Instead of relying on a default probability cutoff, threshold selection is treat
 Evaluation and threshold logic are implemented in:
 * `src/evaluate.py`
 * `src/threshold_analysis.py`
+
+---
+
+## 🏆 Model Performance
+
+Experiments were tracked using MLflow. Logistic Regression was used as a baseline model and compared against a LightGBM classifier.
+
+| Model | Precision | Recall | ROC-AUC |
+|---|---:|---:|---:|
+| Logistic Regression | 0.144 | 0.732 | 0.866 |
+| LightGBM | 0.289 | 0.840 | 0.953 |
+
+LightGBM improved performance across all evaluation metrics compared with the baseline model:
+
+* ROC-AUC improved from **0.866 → 0.953**
+* Recall improved from **0.732 → 0.840**
+* Precision improved from **0.144 → 0.289**
+
+The results demonstrate the benefit of using gradient boosting models for complex tabular fraud detection problems with imbalanced classes.
+
+All experiment parameters, metrics, and model artifacts are tracked using MLflow.
 
 ---
 
