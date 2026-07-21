@@ -1,6 +1,7 @@
 import pandas as pd
 import mlflow
 import mlflow.sklearn
+import mlflow.lightgbm
 import joblib
 
 from sklearn.model_selection import train_test_split
@@ -8,8 +9,10 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score, precision_score, recall_score
 import lightgbm as lgb
 
-from src.feature_engineering import build_features_train, build_features_infer
+from feature_engineering import build_features_train, build_features_infer
 from pathlib import Path
+
+import os
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 MLFLOW_DB = PROJECT_ROOT / "mlflow.db"
@@ -19,7 +22,7 @@ RANDOM_STATE = 42
 
 def train_logistic_regression(X_train, y_train, X_val, y_val):
     model = LogisticRegression(
-        max_iter=1000,
+        max_iter=2000,
         class_weight="balanced",
         n_jobs=-1
     )
@@ -44,7 +47,8 @@ def train_lightgbm(X_train, y_train, X_val, y_val):
         subsample=0.8,
         colsample_bytree=0.8,
         class_weight="balanced",
-        random_state=RANDOM_STATE
+        random_state=RANDOM_STATE,
+        force_row_wise=True
     )
 
     model.fit(X_train, y_train)
@@ -60,7 +64,7 @@ def train_lightgbm(X_train, y_train, X_val, y_val):
 
 
 def main():
-
+    os.environ["MLFLOW_ALLOW_FILE_STORE"] = "true"
     MLRUNS_DIR = PROJECT_ROOT / "mlruns"
     FE_STATE_PATH = PROJECT_ROOT / "fe_state.joblib"
     mlflow.set_tracking_uri(f"file:///{MLRUNS_DIR.as_posix()}")
@@ -98,7 +102,7 @@ def main():
         model, metrics = train_logistic_regression(X_train, y_train, X_val, y_val)
         mlflow.log_params(model.get_params())
         mlflow.log_metrics(metrics)
-        mlflow.sklearn.log_model(model, "model")
+        mlflow.sklearn.log_model(model, name="model")
 
     # LightGBM (Final)
     with mlflow.start_run(run_name="lightgbm"):
@@ -106,7 +110,7 @@ def main():
         model, metrics = train_lightgbm(X_train, y_train, X_val, y_val)
         mlflow.log_params(model.get_params())
         mlflow.log_metrics(metrics)
-        mlflow.sklearn.log_model(model, "model")
+        mlflow.lightgbm.log_model(model, name="model")
 
 
 if __name__ == "__main__":
